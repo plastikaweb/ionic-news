@@ -15,6 +15,27 @@ export class Tab1Page implements OnInit {
   constructor(private newsService: NewsService) {}
 
   ngOnInit() {
-    this.newsService.getTopHeadlines().subscribe((resp) => this.articles.push(...resp.articles));
+    this.loadArticles();
+  }
+
+  loadData(event) {
+    this.loadArticles(event);
+  }
+
+  private loadArticles(event?) {
+    this.newsService.getTopHeadlines().subscribe((resp) => {
+
+      this.articles.push(...resp.articles);
+
+      if (resp.totalResults <= this.articles.length) {
+        event.target.disabled = true;
+        event.target.complete();
+        return;
+      }
+
+      if (event) {
+        event.target.complete();
+      }
+    });
   }
 }
