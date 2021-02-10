@@ -9,6 +9,13 @@ import { Article } from 'src/app/models/article';
 })
 export class ArticleComponent   {
 
+
   @Input() article: Article;
   @Input() index: number;
+
+  constructor() {}
+
+  loadArticle() {
+
+  }
 }

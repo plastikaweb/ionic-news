@@ -29,7 +29,23 @@ export class Tab2Page implements AfterViewInit {
     this.loadArticles(event.detail.value);
   }
 
-  private loadArticles(category: string) {
-    this.newsService.getTopHeadlinesByCategory(category).subscribe(response => this.articles.push(...response.articles));
+  loadData(event) {
+    this.loadArticles(this.segment.value, event);
+  }
+
+  private loadArticles(category: string, event?) {
+    this.newsService.getTopHeadlinesByCategory(category).subscribe(resp => {
+      this.articles.push(...resp.articles);
+
+      if (resp.totalResults <= this.articles.length) {
+        event.target.disabled = true;
+        event.target.complete();
+        return;
+      }
+
+      if (event) {
+        event.target.complete();
+      }
+    });
   }
 }
